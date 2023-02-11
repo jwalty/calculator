@@ -5,8 +5,8 @@
 // disallow strings of numbers to be added (calculate answer after each operation press)
 
 let displayValue = "";
-let currentOperator = "untouched";
-let numberBeforeOperator;
+let currentOperator = "";
+let numberBeforeOperator = 0;
 let numberAfterOperator;
 
 //basic calculator functionality
@@ -36,16 +36,19 @@ numberButtons.forEach((e) => {
 const operatorButtons = document.querySelectorAll('.operator');
 operatorButtons.forEach((e) => {
     e.addEventListener('click', () => {
-        if (e.id === currentOperator) {
-            return;
-        }
+        // if (e.id === currentOperator) {
+        //     displayValue = "";
+        //     return;
+        // }
         
         if (e.id === '=') {
             numberAfterOperator = parseInt(displayValue);
             displayValue = operate(currentOperator,numberBeforeOperator,numberAfterOperator);
+            document.getElementById('history').textContent = `${numberBeforeOperator} ${currentOperator} ${numberAfterOperator} = `;
             document.getElementById('displayValue').textContent = displayValue;
             return;
         }
+
         currentOperator = (e.id);
         numberBeforeOperator = parseInt(displayValue);
         document.getElementById('history').textContent = `${numberBeforeOperator} ${currentOperator}`;
@@ -56,6 +59,14 @@ operatorButtons.forEach((e) => {
 //clear button
 const clearButton = document.querySelector('#clear');
 clearButton.addEventListener('click', () => {
-    displayValue = " ";
+    displayValue = "";
+    numberBeforeOperator = 0;
+    document.getElementById('displayValue').textContent = "0";
+});
+
+//backspace button
+const backspaceButton = document.querySelector('#backspace');
+backspaceButton.addEventListener('click', () => {
+    displayValue = displayValue.slice(0,displayValue.length - 1);
     document.getElementById('displayValue').textContent = displayValue;
 });
