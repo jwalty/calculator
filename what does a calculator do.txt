@@ -1,0 +1,23 @@
+Elements
+    buttons
+        numbers
+        operations
+        equals
+        clear, backspace, etc.
+    display value 
+    current operation
+    history
+
+
+Calculator opens, display value is 0 and current value is empty
+Pressing the first number erases the zero and adds the pressed number to the display value
+Pressing backspace removes the rightmost digit in the display value
+Pressing clear removes all digits in the display value 
+
+Pressing an operation adds the display value and operation pressed to the current operation, keeps the display value in display value
+Pressing other operations immediately after changes the current operation to reflect the new operator
+Pressing a number button clears the display value, and starts with a new string
+
+Once a new number has been pressed, pressing equals will add the second value to the current operation along with an equals sign and change the display value to the result
+Pressing a new number at this point clears display value and current operation and adds pressed number to the display value
+Pressing a new operation at this point clears current operation, adds result to current operation, along with the pressed operation
