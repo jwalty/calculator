@@ -1,34 +1,66 @@
 // TODO:
-// clear better
 // decimal support
 // divide by zero protection
-// disallow strings of numbers to be added (calculate answer after each operation press)
 
-let displayValue = "";
-let currentOperator = "";
-let numberBeforeOperator = 0;
-let numberAfterOperator;
+let displayValue = "0";
+let historyValue = "";
+let operation = "";
+let operationJustSelected = true;
+
+
+function debug() {
+    let debugArray = [displayValue, historyValue, operation, operationJustSelected];
+    console.log(debugArray);
+}
 
 //basic calculator functionality
-function operate(operation, n1, n2) {
+function operate() {
+
+    debug();
+    
+    let n1 = parseInt(historyValue);
+    let n2 = parseInt(displayValue);
+    let solution;
+
     switch (operation) {
         case "+":
-            return n1 + n2;
+            solution = n1 + n2;
+            break;
         case "-":
-            return n1 - n2; 
+            solution = n1 - n2; 
+            break;
         case "/":
-            return n1 / n2;
+            solution = n1 / n2;
+            break;
         case "*":
-            return n1 * n2;
+            solution = n1 * n2;
+            break;
+        case "":
+            document.getElementById('history').textContent = `${displayValue} = `;
+            return;
     }
+
+
+    document.getElementById('history').textContent = `${historyValue} ${operation}  ${displayValue} = `;
+    displayValue = solution;
+    document.getElementById('displayValue').textContent = displayValue;
+    return solution;
 }
 
 //number buttons
 const numberButtons = document.querySelectorAll('.number');
 numberButtons.forEach((e) => {
     e.addEventListener('click', () => {
+
+        //this erases the first number when you start typing after hitting an operation
+        if (operationJustSelected == true) {
+            operationJustSelected = false;
+            displayValue = "";
+        }
+
         displayValue = displayValue + (e.id);
         document.getElementById('displayValue').textContent = displayValue;
+
     });
 });
 
@@ -36,37 +68,44 @@ numberButtons.forEach((e) => {
 const operatorButtons = document.querySelectorAll('.operator');
 operatorButtons.forEach((e) => {
     e.addEventListener('click', () => {
-        // if (e.id === currentOperator) {
-        //     displayValue = "";
-        //     return;
-        // }
-        
-        if (e.id === '=') {
-            numberAfterOperator = parseInt(displayValue);
-            displayValue = operate(currentOperator,numberBeforeOperator,numberAfterOperator);
-            document.getElementById('history').textContent = `${numberBeforeOperator} ${currentOperator} ${numberAfterOperator} = `;
-            document.getElementById('displayValue').textContent = displayValue;
-            return;
-        }
 
-        currentOperator = (e.id);
-        numberBeforeOperator = parseInt(displayValue);
-        document.getElementById('history').textContent = `${numberBeforeOperator} ${currentOperator}`;
-        displayValue = "";
+        operation = e.id;
+        historyValue = displayValue;
+        document.getElementById('history').textContent = `${displayValue} ${operation}`;
+        operationJustSelected = true;
     });
+});
+
+//equals sign
+const equalsButton = document.querySelector('#equals');
+equalsButton.addEventListener('click', () => {
+
+    console.log(operate());
+
 });
 
 //clear button
 const clearButton = document.querySelector('#clear');
 clearButton.addEventListener('click', () => {
     displayValue = "";
-    numberBeforeOperator = 0;
-    document.getElementById('displayValue').textContent = "0";
+    historyValue = "";
+    operation = "";
+    document.getElementById('history').textContent = historyValue;
+    document.getElementById('displayValue').textContent = 0;
+
 });
 
 //backspace button
 const backspaceButton = document.querySelector('#backspace');
 backspaceButton.addEventListener('click', () => {
-    displayValue = displayValue.slice(0,displayValue.length - 1);
+
+
+
+});
+
+//backspace button
+const negativeButton = document.querySelector('#negative');
+negativeButton.addEventListener('click', () => {
+    displayValue = parseInt(displayValue) * -1;
     document.getElementById('displayValue').textContent = displayValue;
 });
